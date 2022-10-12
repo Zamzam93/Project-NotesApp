@@ -1,5 +1,6 @@
 package com.devmountain.noteApp.entities;
 
+import com.devmountain.noteApp.dtos.NoteDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -37,27 +38,11 @@ public class Note {
     private Set<Note> noteSet = new HashSet<>();
     //created successful schema for our data
 
-    public Long getId() {
-        return id;
+    public Note(NoteDto noteDto){
+        if(noteDto.getBody() !=null){
+            this.body=noteDto.getBody();
+        }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public Note(Long id) {
-        this.id = id;
-    }
-
-    public Note(String body) {
-        this.body = body;
-    }
 }

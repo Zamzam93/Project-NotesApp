@@ -1,6 +1,14 @@
 package com.devmountain.noteApp.entities;
 
+import com.devmountain.noteApp.dtos.UserDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 // Entities: An object that represents the thing you are trying to persist
 
@@ -9,6 +17,9 @@ import javax.persistence.*;
 // @Table: This is where you can set what table you want these objects to be mapped to
 @Entity
 @Table(name = "Users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     //need to give class an Id
     @Id
@@ -29,6 +40,21 @@ public class User {
     private String password;
 
     //generate getters and setters to be able to get these values or set these values.
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
+    private Set<Note> noteSet = new HashSet<>();
+
+    public User(UserDto userDto){
+        if(userDto.getUsername()!=null){
+            this.username=userDto.getUsername();
+        }
+        if(userDto.getPassword()!=null){
+            this.password=userDto.getPassword();
+        }
+    }
+
+
 
     public Long getId() {
         return id;
@@ -54,9 +80,6 @@ public class User {
         this.password = password;
     }
 
-    public User() {
-    }
-
     public User(Long id) {
         this.id = id;
     }
@@ -64,6 +87,8 @@ public class User {
     public User(String username) {
         this.username = username;
     }
+
+
 
 
 }
